@@ -9,7 +9,8 @@
   "scripts": {
     "validate": "./node_modules/eslint/bin/eslint.js src",
     "test": "ava --verbose",
-    "watch": "ava --watch"
+    "watch": "ava --watch",
+    "coverage": "nyc ava"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "eslint": "^3.5.0",
     "eslint-config-airbnb-base": "^7.1.0",
     "eslint-plugin-import": "^1.15.0",
+    "nyc": "^8.3.0",
     "rb-conventional-changelog": "^1.1.9",
     "sinon": "^1.17.6"
   },
