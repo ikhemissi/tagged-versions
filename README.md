@@ -6,7 +6,7 @@
 
 ### All project versions
 Return all the tagged project versions:
-```
+```javascript
 const taggedVersions = require('tagged-versions');
 return taggedVersions.getList()
   .then(versions => console.log(versions));
@@ -20,7 +20,7 @@ return taggedVersions.getList()
 ```
 
 You can optionally filter versions with a [semver range](https://github.com/npm/node-semver#advanced-range-syntax):
-```
+```javascript
 const taggedVersions = require('tagged-versions');
 return taggedVersions.getList('^1.1.0')
   .then(versions => console.log(versions));
@@ -34,7 +34,7 @@ return taggedVersions.getList('^1.1.0')
 
 ### Last project version
 Return the last tagged project version:
-```
+```javascript
 const taggedVersions = require('tagged-versions');
 return taggedVersions.getLastVersion()
   .then(versions => console.log(version));
@@ -43,7 +43,7 @@ return taggedVersions.getLastVersion()
 ```
 
 Like with `getList`, you can also filter with a [semver range](https://github.com/npm/node-semver#advanced-range-syntax):
-```
+```javascript
 const taggedVersions = require('tagged-versions');
 return taggedVersions.getLastVersion('~1.1')
   .then(versions => console.log(version));
