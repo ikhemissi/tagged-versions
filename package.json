@@ -1,14 +1,15 @@
 {
   "name": "tagged-versions",
   "version": "0.0.1",
-  "description": "Get tagged project semver versions",
+  "description": "Get tagged semver-compatible project versions",
   "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "validate": "./node_modules/eslint/bin/eslint.js src",
-    "test": "ava --verbose"
+    "test": "ava --verbose",
+    "watch": "ava --watch"
   },
   "repository": {
     "type": "git",
