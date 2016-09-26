@@ -1,0 +1,42 @@
+{
+  "name": "tagged-versions",
+  "version": "0.0.1",
+  "description": "Get tagged project semver versions",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "validate": "./node_modules/eslint/bin/eslint.js src",
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikhemissi/tagged-versions.git"
+  },
+  "keywords": [
+    "tags",
+    "versions",
+    "semver",
+    "git",
+    "hash"
+  ],
+  "author": "Iheb Khemissi <iheb.khemissi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ikhemissi/tagged-versions/issues"
+  },
+  "homepage": "https://github.com/ikhemissi/tagged-versions#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/rb-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb-base": "^7.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "rb-conventional-changelog": "^1.1.9"
+  }
+}

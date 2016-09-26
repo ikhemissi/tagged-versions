@@ -1,0 +1,7 @@
+'use strict';
+
+const test = require('ava');
+
+test('my passing test', (t) => {
+    t.pass();
+});
