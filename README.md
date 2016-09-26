@@ -4,6 +4,12 @@
 
 [![Build Status](https://travis-ci.org/ikhemissi/tagged-versions.svg?branch=master)](https://travis-ci.org/ikhemissi/tagged-versions)
 [![Coverage Status](https://coveralls.io/repos/github/ikhemissi/tagged-versions/badge.svg)](https://coveralls.io/github/ikhemissi/tagged-versions)
+[![NPM version](https://img.shields.io/npm/v/tagged-versions.svg)](https://www.npmjs.com/package/tagged-versions)
+
+## Installation
+```sh
+npm install tagged-versions --save
+```
 
 ## Usage
 
