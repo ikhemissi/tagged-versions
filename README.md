@@ -2,6 +2,8 @@
 
 > Get tagged semver-compatible project versions
 
+[![Build Status](https://travis-ci.org/ikhemissi/tagged-versions.svg?branch=master)](https://travis-ci.org/ikhemissi/tagged-versions)
+
 ## Usage
 
 ### All project versions
