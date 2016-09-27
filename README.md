@@ -1,10 +1,10 @@
 # tagged-versions
 
-> Get tagged semver-compatible project versions
+> Get tagged semver-compatible project versions [{ version, tag, hash}]
 
-[![Build Status](https://travis-ci.org/ikhemissi/tagged-versions.svg?branch=master)](https://travis-ci.org/ikhemissi/tagged-versions)
-[![Coverage Status](https://coveralls.io/repos/github/ikhemissi/tagged-versions/badge.svg)](https://coveralls.io/github/ikhemissi/tagged-versions)
-[![NPM version](https://img.shields.io/npm/v/tagged-versions.svg)](https://www.npmjs.com/package/tagged-versions)
+[![Build Status][travis-badge]][travis-link]
+[![Coverage Status][coveralls-badge]][coveralls-link]
+[![NPM version][shields-badge]][npm-link]
 
 ## Installation
 ```sh
@@ -61,5 +61,11 @@ return taggedVersions.getLastVersion('~1.1')
 ```
 
 ## Contributing
-Please follow the [Airbnb guidelines](https://github.com/airbnb/javascript), commit your changes with `git cz`, and then create a pull request.
-Thank you :-)
+Please follow the [Airbnb guidelines](https://github.com/airbnb/javascript) and commit your changes with [commitzen](https://www.npmjs.com/package/commitizen) using `git cz`.
+
+[travis-badge]: https://travis-ci.org/ikhemissi/tagged-versions.svg?branch=master
+[travis-link]: https://travis-ci.org/ikhemissi/tagged-versions
+[coveralls-badge]: https://coveralls.io/repos/github/ikhemissi/tagged-versions/badge.svg?branch=master
+[coveralls-link]: https://coveralls.io/github/ikhemissi/tagged-versions?branch=master
+[shields-badge]: https://img.shields.io/npm/v/tagged-versions.svg
+[npm-link]: https://www.npmjs.com/package/tagged-versions
