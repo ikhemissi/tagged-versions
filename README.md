@@ -11,6 +11,8 @@
 npm install tagged-versions --save
 ```
 
+Supported Node versions: 5+
+
 ## Usage
 
 ### All project versions
