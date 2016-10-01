@@ -3,7 +3,7 @@
 const semver = require('semver');
 const childProcess = require('child-process-promise');
 
-const tagAndHashRegex = /.*tag:([^,]+).*;(.+)/;
+const tagAndHashRegex = /.*tag:\s*([^,)]+).*;(.+)/;
 
 function runCommand(command) {
   return childProcess.exec(command)
@@ -11,7 +11,7 @@ function runCommand(command) {
 }
 
 function getList(range) {
-  return runCommand('git log --no-walk --tags --pretty="%D;%H" --decorate=short')
+  return runCommand('git log --no-walk --tags --pretty="%d;%H" --decorate=short')
     .then(output => output.split('\n'))
     .then(lines => lines.map(line => tagAndHashRegex.exec(line)))
     .then(tags => tags.filter(tagAndHash => Array.isArray(tagAndHash) && tagAndHash.length === 3))
