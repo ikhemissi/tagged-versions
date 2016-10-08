@@ -11,7 +11,7 @@ function runCommand(command) {
 }
 
 function getList(range) {
-  return runCommand('git log --no-walk --tags --pretty="%d;%H;%cI" --decorate=short')
+  return runCommand('git log --no-walk --tags --pretty="%d;%H;%ci" --decorate=short')
     .then(output => output.split('\n'))
     .then(lines => lines.map(line => commitDetailsRegex.exec(line)))
     .then(tags => tags.filter(tagAndHash => Array.isArray(tagAndHash) && tagAndHash.length === 4))
