@@ -3,22 +3,36 @@
 const semver = require('semver');
 const childProcess = require('child-process-promise');
 
-const commitDetailsRegex = /.*tag:\s*([^,)]+).*;(.+);(.+)/;
+const tagRegex = /tag:\s*([^,)]+)/g;
+const commitDetailsRegex = /.*?(tag:\s*([^,)]+).*);(.+);(.+)/;
 
 function runCommand(command) {
   return childProcess.exec(command)
     .then(result => result.stdout);
 }
 
+function getFirstValidTag(allTags, guess) {
+  let match;
+  let result = guess;
+  while (match = tagRegex.exec(allTags)) {
+    if (semver.valid(match[1])) {
+      result = match[1];
+      break;
+    }
+  }
+
+  return result;
+}
+
 function getList(range) {
   return runCommand('git log --no-walk --tags --pretty="%d;%H;%ci" --decorate=short')
     .then(output => output.split('\n'))
     .then(lines => lines.map(line => commitDetailsRegex.exec(line)))
-    .then(tags => tags.filter(tagAndHash => Array.isArray(tagAndHash) && tagAndHash.length === 4))
+    .then(tags => tags.filter(tagAndHash => Array.isArray(tagAndHash) && tagAndHash.length === 5))
     .then(tags => tags.map((details) => {
-      const tag = details[1].trim();
-      const hash = details[2].trim();
-      const date = new Date(details[3].trim());
+      const tag = getFirstValidTag(details[1], details[2]);
+      const hash = details[3].trim();
+      const date = new Date(details[4].trim());
       return { tag, hash, date, version: semver.valid(tag) };
     }))
     .then(tags => tags.filter(details => !!details.version))
