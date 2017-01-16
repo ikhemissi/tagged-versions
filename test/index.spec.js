@@ -48,28 +48,28 @@ test.afterEach(t => {
   childProcess.exec = t.context.exec;
 });
 
-test('return all tagged versions', (t) => {
+test.serial('return all tagged versions', (t) => {
   return taggedVersions.getList()
     .then((list) => {
       t.deepEqual(list, [versions['1.2.0'], versions['1.1.1'], versions['1.1.0'], versions['1.0.0']]);
     });
 });
 
-test('return all tagged versions within a range', (t) => {
+test.serial('return all tagged versions within a range', (t) => {
   return taggedVersions.getList('^1.1.0')
     .then((list) => {
       t.deepEqual(list, [versions['1.2.0'], versions['1.1.1'], versions['1.1.0']]);
     });
 });
 
-test('return last tagged version', (t) => {
+test.serial('return last tagged version', (t) => {
   return taggedVersions.getLastVersion()
     .then((version) => {
       t.deepEqual(version, versions['1.2.0']);
     });
 });
 
-test('return last tagged version within a range', (t) => {
+test.serial('return last tagged version within a range', (t) => {
   return taggedVersions.getLastVersion('~1.1')
     .then((version) => {
       t.deepEqual(version, versions['1.1.1']);
