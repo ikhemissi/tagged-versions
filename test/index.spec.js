@@ -8,7 +8,7 @@ const taggedVersions = require('../src');
 const gitLog = `
 (HEAD -> master, tag: v1.2.0, origin/master, origin/HEAD);f6bf448b02c489c8676f2eeaaac72ef93980baf2;2016-10-08 11:47:01 +0100
 (tag: v1.1.1);cd88316d6976ce8878a90a1a6d4eb326d16a4d68;2016-10-01 17:34:24 +0100
-(tag: v1.1.0);61fca7630fbe863f8d890d7a33e9b45f786d79e8;2016-09-27 22:35:42 +0100
+(tag: v1.1.0, tag: stable);61fca7630fbe863f8d890d7a33e9b45f786d79e8;2016-09-27 22:35:42 +0100
 (tag: v1.0.0);9c5d6e1930831431c005bc74543f61a5cb36d617;2016-09-26 23:56:00 +0100
 `;
 
