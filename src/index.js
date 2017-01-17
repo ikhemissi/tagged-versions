@@ -24,8 +24,17 @@ function getFirstValidTag(allTags, guess) {
   return result;
 }
 
-function getList(range) {
-  return runCommand('git log --no-walk --tags --pretty="%d;%H;%ci" --decorate=short')
+function isString(v) {
+  return typeof v === 'string';
+}
+
+function getList(options) {
+  const range = isString(options) ? options : (options && options.range);
+  const rev = options && options.rev;
+  const fmt = '--pretty="%d;%H;%ci" --decorate=short';
+  const cmd = rev ? `git log --simplify-by-decoration ${fmt} ${rev}` : `git log --no-walk --tags ${fmt}`;
+
+  return runCommand(cmd)
     .then(output => output.split('\n'))
     .then(lines => lines.map(line => commitDetailsRegex.exec(line)))
     .then(tags => tags.filter(tagAndHash => Array.isArray(tagAndHash) && tagAndHash.length === 5))
@@ -40,8 +49,8 @@ function getList(range) {
     .then(tags => tags.sort((t1, t2) => semver.rcompare(t1.version, t2.version)));
 }
 
-function getLastVersion(range) {
-  return getList(range)
+function getLastVersion(options) {
+  return getList(options)
     .then(list => list[0]);
 }
 

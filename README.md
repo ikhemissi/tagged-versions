@@ -43,6 +43,18 @@ return taggedVersions.getList('^1.1.0')
 // ]
 ```
 
+Or with a [revision range](https://git-scm.com/docs/revisions#_specifying_ranges):
+```javascript
+const taggedVersions = require('tagged-versions');
+return taggedVersions.getList({rev: 'v1.1.0..v1.2.0'})
+  .then(versions => console.log(versions));
+
+// [
+//   { version: '1.2.0', tag: 'v1.2.0', hash: 'f6bf448b02c489c8676f2eeaaac72ef93980baf2', date: <Date> },
+//   { version: '1.1.1', tag: 'v1.1.1', hash: 'b656238b0fc2502b19bd0e803eb87447840dc52a', date: <Date> }
+// ]
+```
+
 ### Last project version
 Return the last tagged project version:
 ```javascript
