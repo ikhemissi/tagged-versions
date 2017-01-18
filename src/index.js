@@ -1,7 +1,7 @@
 /**
- * Query github for semantic version tag.
+ * Query git for semantic version tag.
  *
- * @typedef {{tag: string, version: string, hash: string, date: Date}} Tag
+ * @typedef {{tag: string, version: string, hash: string, date: Date}} Commit
  */
 
 'use strict';
@@ -10,7 +10,7 @@ const semver = require('semver');
 const childProcess = require('child-process-promise');
 
 const tagRegex = /tag:\s*([^,)]+)/g;
-const commitDetailsRegex = /.*?(tag:\s*([^,)]+).*);(.+);(.+)/;
+const commitDetailsRegex = /^(.+);(.+);(.+)$/;
 
 /**
  * Run shell command and resolve with stdout content
@@ -24,22 +24,33 @@ function runCommand(command) {
 }
 
 /**
- * Return first semantic version tag name in the list reference.
+ * Get all tags with a semantic version name out of a list of Refs
  *
- * @param  {string} allTags Comma seprated list of tag name
- * @param  {string} guess   Last tag match
- * @return {string}
+ * @param  {string} refs List of refs
+ * @return {Arrays<Commit>}
  */
-function getFirstValidTag(allTags, guess) {
-  let match;
-  let result = guess;
-  while (match = tagRegex.exec(allTags)) {
-    if (semver.valid(match[1])) {
-      result = match[1];
-      break;
+function getSemanticCommits(refs) {
+  const tagNames = [];
+  let match = [];
+
+  // Finding successive matches
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec#Finding_successive_matches
+  while (match) {
+    match = tagRegex.exec(refs);
+
+    if (match) {
+      tagNames.push(match[1]);
     }
   }
-  return result;
+
+  return tagNames.map(name => ({
+    tag: name,
+    version: semver.valid(name),
+    hash: null,
+    date: null,
+  })).filter(
+    tag => tag.version != null
+  );
 }
 
 function isString(v) {
@@ -50,26 +61,30 @@ function isString(v) {
  * Parse commit into an array of tag object.
  *
  * @param  {string} line Line to parse
- * @return {Tag}
+ * @return {Array<Commit>}
  */
 function parseLine(line) {
   const match = commitDetailsRegex.exec(line);
 
-  if (!match || match.length < 5) {
-    return null;
+  if (!match || match.length < 4) {
+    return [];
   }
 
-  const tag = getFirstValidTag(match[1], match[2]);
-  const version = semver.valid(tag);
+  const tags = getSemanticCommits(match[1]);
+  const hash = match[2].trim();
+  const date = new Date(match[3].trim());
 
-  if (!version) {
-    return null;
-  }
+  return tags.map(tag => Object.assign(tag, { hash, date }));
+}
 
-  const hash = match[3].trim();
-  const date = new Date(match[4].trim());
-
-  return { tag, hash, date, version };
+/**
+ * Merge the arrays of elements into one array.
+ *
+ * @param  {Array<Array<any>>} arrays The list of array to merge
+ * @return {Array<any>}
+ */
+function flatten(tags) {
+  return Array.prototype.concat.apply([], tags);
 }
 
 /**
@@ -77,9 +92,9 @@ function parseLine(line) {
  *
  * Skip filtering if the range is not set.
  *
- * @param  {Array<Tag>} tags  List of tags
+ * @param  {Array<Commit>} tags  List of tags
  * @param  {string}     range Semantic range to filter with.
- * @return {Array<Tag>}
+ * @return {Array<Commit>}
  */
 function filterByRange(tags, range) {
   if (!range) {
@@ -92,11 +107,11 @@ function filterByRange(tags, range) {
 /**
  * Compare tag by version.
  *
- * @param  {Tag} a First tag
- * @param  {Tag} b Second tag
+ * @param  {Commit} a First tag
+ * @param  {Commit} b Second tag
  * @return {number}
  */
-function compareTag(a, b) {
+function compareCommit(a, b) {
   return semver.rcompare(a.version, b.version);
 }
 
@@ -106,7 +121,7 @@ function compareTag(a, b) {
  * @param  {object|string} options       Options map or range string
  * @param  {string}        options.range Semantic range to filter tag with
  * @param  {string}        options.rev   Revision range to filter tag with
- * @return {Promise<Array<Tag>,Error>}
+ * @return {Promise<Array<Commit>,Error>}
  */
 function getList(options) {
   const range = isString(options) ? options : (options && options.range);
@@ -116,11 +131,9 @@ function getList(options) {
 
   return runCommand(cmd).then((output) => {
     const lines = output.split('\n');
-    const tags = lines
-      .map(parseLine)
-      .filter(tag => tag != null);
+    const tags = flatten(lines.map(parseLine));
 
-    return filterByRange(tags, range).sort(compareTag);
+    return filterByRange(tags, range).sort(compareCommit);
   });
 }
 
@@ -130,7 +143,7 @@ function getList(options) {
  * @param  {object|string} options       Options map or range string
  * @param  {string}        options.range Semantic range to filter tag with
  * @param  {string}        options.rev   Revision range to filter tag with
- * @return {Promise<Tag,Error>}
+ * @return {Promise<Commit,Error>}
  */
 function getLastVersion(options) {
   return getList(options)
