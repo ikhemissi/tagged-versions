@@ -1,6 +1,6 @@
 {
   "name": "tagged-versions",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Get tagged semver-compatible project versions",
   "main": "src/index.js",
   "directories": {
